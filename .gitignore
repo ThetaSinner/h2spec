@@ -4,3 +4,4 @@ h2specd
 glide.lock
 vendor/
 release/
+.idea/
