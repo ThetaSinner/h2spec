@@ -1,6 +1,6 @@
 package http2
 
-import "github.com/summerwind/h2spec/spec"
+import "thetasinner/h2spec/spec"
 
 func FrameDefinitions() *spec.TestGroup {
 	tg := NewTestGroup("6", "Frame Definitions")

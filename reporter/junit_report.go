@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/summerwind/h2spec/spec"
+	"thetasinner/h2spec/spec"
 )
 
 // JUnitReport represents the JUnit XML format.

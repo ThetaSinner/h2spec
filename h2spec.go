@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/summerwind/h2spec/client"
-	"github.com/summerwind/h2spec/config"
-	"github.com/summerwind/h2spec/generic"
-	"github.com/summerwind/h2spec/hpack"
-	"github.com/summerwind/h2spec/http2"
-	"github.com/summerwind/h2spec/log"
-	"github.com/summerwind/h2spec/reporter"
-	"github.com/summerwind/h2spec/spec"
+	"thetasinner/h2spec/client"
+	"thetasinner/h2spec/config"
+	"thetasinner/h2spec/generic"
+	"thetasinner/h2spec/hpack"
+	"thetasinner/h2spec/http2"
+	"thetasinner/h2spec/log"
+	"thetasinner/h2spec/reporter"
+	"thetasinner/h2spec/spec"
 )
 
 func Run(c *config.Config) (bool, error) {
