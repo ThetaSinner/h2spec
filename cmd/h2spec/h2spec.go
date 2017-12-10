@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/summerwind/h2spec"
+	"thetasinner/h2spec"
 	"thetasinner/h2spec/config"
 )
 

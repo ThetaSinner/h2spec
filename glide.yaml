@@ -1,4 +1,4 @@
-package: github.com/summerwind/h2spec
+package: thetasinner/h2spec
 import:
 - package: golang.org/x/net
   version: 55a3084c9119aeb9ba2437d595b0a7e9cb635da9
