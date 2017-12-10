@@ -5,7 +5,7 @@ import (
 	"thetasinner/h2spec/spec"
 	"golang.org/x/net/http2"
 )
-
+ 
 func MaximumTableSize() *spec.TestGroup {
 	tg := NewTestGroup("4.2", "Maximum Table Size")
 
@@ -16,32 +16,22 @@ func MaximumTableSize() *spec.TestGroup {
 	// In HTTP/2, this follows a settings acknowledgment (see Section
 	// 6.5.3 of [HTTP2]).
 	tg.AddTestCase(&spec.TestCase{
-		Desc:        "Sends a dynamic table size update at the end of header block",
-		Requirement: "The endpoint MUST treat this as a decoding error.",
+		Desc:        "Sends reduced MAXIMUM_TABLE_SIZE setting",
+		Requirement: "Server must acknowledge then send dynamic table size update as the first instruction in the next header block it sends",
 		Run: func(c *config.Config, conn *spec.Conn) error {
-			var streamID uint32 = 1
 
 			err := conn.Handshake()
 			if err != nil {
 				return err
 			}
 
-			// Dynamic table size update with value 1
-			tableSizeUpdate := []byte("\x21")
-
-			headers := spec.CommonHeaders(c)
-			blockFragment := conn.EncodeHeaders(headers)
-			blockFragment = append(blockFragment, tableSizeUpdate...)
-
-			hp := http2.HeadersFrameParam{
-				StreamID:      streamID,
-				EndStream:     true,
-				EndHeaders:    true,
-				BlockFragment: blockFragment,
+			setting := http2.Setting{
+				ID:  http2.SettingHeaderTableSize,
+				Val: conn.MaxFrameSize() - 1,
 			}
-			conn.WriteHeaders(hp)
 
-			return spec.VerifyConnectionError(conn, http2.ErrCodeCompression)
+			conn.WriteSettings(setting)
+			return spec.VerifySettingsFrameWithAck(conn)
 		},
 	})
 
