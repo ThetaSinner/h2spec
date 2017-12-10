@@ -76,7 +76,7 @@ func VerifyConnectionError(conn *Conn, codes ...http2.ErrCode) error {
 	}
 
 	if !passed {
-		expected := []string{}
+		var expected []string
 		for _, code := range codes {
 			expected = append(expected, fmt.Sprintf(ExpectedGoAwayFrame, code))
 		}
@@ -121,7 +121,7 @@ func VerifyStreamError(conn *Conn, codes ...http2.ErrCode) error {
 	}
 
 	if !passed {
-		expected := []string{}
+		var expected []string
 		for _, code := range codes {
 			expected = append(expected, fmt.Sprintf(ExpectedGoAwayFrame, code))
 			expected = append(expected, fmt.Sprintf(ExpectedRSTStreamFrame, code))
@@ -188,7 +188,7 @@ func VerifyHeadersFrame(conn *Conn, streamID uint32) error {
 	actual, passed := conn.WaitEventByType(EventHeadersFrame)
 	switch event := actual.(type) {
 	case HeadersFrameEvent:
-		passed = (event.Header().StreamID == streamID)
+		passed = event.Header().StreamID == streamID
 	default:
 		passed = false
 	}

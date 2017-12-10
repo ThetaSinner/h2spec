@@ -22,7 +22,7 @@ func main() {
 		Long:  "Conformance testing tool for HTTP/2 client implementation.",
 		RunE:  run,
 	}
-
+ 
 	cmd.SilenceUsage = true
 	cmd.SilenceErrors = true
 

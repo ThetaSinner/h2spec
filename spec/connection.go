@@ -471,7 +471,7 @@ func (conn *Conn) updateWindowSize(f http2.Frame) {
 		return
 	}
 
-	len := int(f.Header().Length)
+	length := int(f.Header().Length)
 	streamID := f.Header().StreamID
 
 	_, ok := conn.WindowSize[streamID]
@@ -479,14 +479,14 @@ func (conn *Conn) updateWindowSize(f http2.Frame) {
 		conn.WindowSize[streamID] = DefaultWindowSize
 	}
 
-	conn.WindowSize[streamID] -= len
+	conn.WindowSize[streamID] -= length
 	if conn.WindowSize[streamID] <= 0 {
 		incr := DefaultWindowSize + (conn.WindowSize[streamID] * -1)
 		conn.WriteWindowUpdate(streamID, uint32(incr))
 		conn.WindowSize[streamID] += incr
 	}
 
-	conn.WindowSize[0] -= len
+	conn.WindowSize[0] -= length
 	if conn.WindowSize[0] <= 0 {
 		incr := DefaultWindowSize + (conn.WindowSize[0] * -1)
 		conn.WriteWindowUpdate(0, uint32(incr))

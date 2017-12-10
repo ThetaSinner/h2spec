@@ -32,7 +32,7 @@ func DynamicTableSizeUpdate() *spec.TestGroup {
 			}
 
 			tableSize := uint64(maxTableSize + 1)
-			rep := []byte{}
+			var rep []byte
 
 			// Encode to dynamic table size update.
 			// This code is from golang.org/x/net/http2.

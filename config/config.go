@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	RunModeAll = iota
+	RunModeAll   = iota
 	RunModeGroup
 	RunModeNone
 )
