@@ -37,7 +37,7 @@ func FrameSize() *spec.ClientTestGroup {
 
 			conn.WriteHeaders(hp)
 
-			data := spec.DummyString(conn.MaxFrameSize())
+			data := spec.DummyString(int(conn.MaxFrameSize()))
 			conn.WriteData(req.StreamID, true, []byte(data))
 
 			pingData := [8]byte{}
@@ -76,7 +76,7 @@ func FrameSize() *spec.ClientTestGroup {
 
 			conn.WriteHeaders(hp)
 
-			data := spec.DummyString(conn.MaxFrameSize() + 1)
+			data := spec.DummyString(int(conn.MaxFrameSize() + 1))
 			conn.WriteData(req.StreamID, true, []byte(data))
 
 			return spec.VerifyStreamError(conn, http2.ErrCodeFrameSize)

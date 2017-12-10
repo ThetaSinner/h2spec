@@ -18,10 +18,10 @@ import (
 )
 
 const (
-	// DefaultWindowSize is the value of default connection window size.
-	DefaultWindowSize = 65535
-	// DefaultFrameSize is the value of default frame size.
-	DefaultFrameSize = 16384
+	DefaultSettingHeaderTableSize = 4096
+	DefaultSettingEnablePush = 1
+	DefaultSettingInitialWindowSize = 65535
+	DefaultSettingMaxFrameSize = 16384
 )
 
 // Conn represent a HTTP/2 connection.
@@ -81,7 +81,14 @@ func Dial(c *config.Config) (*Conn, error) {
 		}
 	}
 
-	settings := map[http2.SettingID]uint32{}
+	settings := map[http2.SettingID]uint32{
+		http2.SettingHeaderTableSize: DefaultSettingHeaderTableSize,
+		http2.SettingEnablePush: DefaultSettingEnablePush,
+		//http2.SettingMaxConcurrentStreams - Unlimited, only set if want to limit
+		http2.SettingInitialWindowSize: DefaultSettingInitialWindowSize,
+		http2.SettingMaxFrameSize: DefaultSettingMaxFrameSize,
+		// http2.SettingMaxHeaderListSize - Unlimited, only set if want to limit
+	}
 
 	framer := http2.NewFramer(baseConn, baseConn)
 	framer.AllowIllegalWrites = true
@@ -100,7 +107,7 @@ func Dial(c *config.Config) (*Conn, error) {
 		Closed:   false,
 
 		WindowUpdate: true,
-		WindowSize:   map[uint32]int{0: DefaultWindowSize},
+		WindowSize:   map[uint32]int{0: DefaultSettingInitialWindowSize},
 
 		framer:     framer,
 		encoder:    encoder,
@@ -140,7 +147,7 @@ func Accept(c *config.Config, baseConn net.Conn) (*Conn, error) {
 		Closed:   false,
 
 		WindowUpdate: true,
-		WindowSize:   map[uint32]int{0: DefaultWindowSize},
+		WindowSize:   map[uint32]int{0: DefaultSettingInitialWindowSize},
 
 		framer:     framer,
 		encoder:    encoder,
@@ -171,12 +178,12 @@ func (conn *Conn) Handshake() error {
 
 // MaxFrameSize returns value of Handshake performs HTTP/2 handshake
 // with the server.
-func (conn *Conn) MaxFrameSize() int {
+func (conn *Conn) MaxFrameSize() uint32 {
 	val, ok := conn.Settings[http2.SettingMaxFrameSize]
 	if !ok {
-		return DefaultFrameSize
+		return DefaultSettingMaxFrameSize
 	}
-	return int(val)
+	return val
 }
 
 // EncodeHeaders encodes header and returns encoded bytes. Conn
@@ -476,19 +483,19 @@ func (conn *Conn) updateWindowSize(f http2.Frame) {
 
 	_, ok := conn.WindowSize[streamID]
 	if !ok {
-		conn.WindowSize[streamID] = DefaultWindowSize
+		conn.WindowSize[streamID] = DefaultSettingInitialWindowSize
 	}
 
 	conn.WindowSize[streamID] -= length
 	if conn.WindowSize[streamID] <= 0 {
-		incr := DefaultWindowSize + (conn.WindowSize[streamID] * -1)
+		incr := DefaultSettingInitialWindowSize + (conn.WindowSize[streamID] * -1)
 		conn.WriteWindowUpdate(streamID, uint32(incr))
 		conn.WindowSize[streamID] += incr
 	}
 
 	conn.WindowSize[0] -= length
 	if conn.WindowSize[0] <= 0 {
-		incr := DefaultWindowSize + (conn.WindowSize[0] * -1)
+		incr := DefaultSettingInitialWindowSize + (conn.WindowSize[0] * -1)
 		conn.WriteWindowUpdate(0, uint32(incr))
 		conn.WindowSize[0] += incr
 	}
@@ -566,7 +573,7 @@ func (conn *Conn) handshakeAsClient() error {
 
 		setting := http2.Setting{
 			ID:  http2.SettingInitialWindowSize,
-			Val: DefaultWindowSize,
+			Val: DefaultSettingInitialWindowSize,
 		}
 		conn.WriteSettings(setting)
 
@@ -636,7 +643,7 @@ func (conn *Conn) handshakeAsServer() error {
 
 		setting := http2.Setting{
 			ID:  http2.SettingInitialWindowSize,
-			Val: DefaultWindowSize,
+			Val: DefaultSettingInitialWindowSize,
 		}
 		conn.WriteSettings(setting)
 		conn.WriteSettingsAck()

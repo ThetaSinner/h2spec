@@ -20,7 +20,7 @@ func StartingHTTP2() *spec.TestGroup {
 
 			setting := http2.Setting{
 				ID:  http2.SettingInitialWindowSize,
-				Val: spec.DefaultWindowSize,
+				Val: spec.DefaultSettingInitialWindowSize,
 			}
 
 			conn.Send([]byte("PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"))
