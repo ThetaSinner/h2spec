@@ -1,8 +1,8 @@
 package client
 
 import (
-	"github.com/summerwind/h2spec/config"
-	"github.com/summerwind/h2spec/spec"
+	"thetasinner/h2spec/config"
+	"thetasinner/h2spec/spec"
 )
 
 func ExtendingHTTP2() *spec.ClientTestGroup {

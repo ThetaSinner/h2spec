@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/summerwind/h2spec"
-	"github.com/summerwind/h2spec/config"
+	"thetasinner/h2spec/config"
 )
 
 var (

@@ -3,8 +3,8 @@ package reporter
 import (
 	"fmt"
 
-	"github.com/summerwind/h2spec/log"
-	"github.com/summerwind/h2spec/spec"
+	"thetasinner/h2spec/log"
+	"thetasinner/h2spec/spec"
 )
 
 // Summary outputs the summary of test result that includes

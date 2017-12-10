@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
-	"github.com/summerwind/h2spec/config"
+	"thetasinner/h2spec/config"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/hpack"

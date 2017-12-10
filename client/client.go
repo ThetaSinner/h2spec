@@ -1,6 +1,6 @@
 package client
 
-import "github.com/summerwind/h2spec/spec"
+import "thetasinner/h2spec/spec"
 
 var key = "client"
 

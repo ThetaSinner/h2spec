@@ -6,8 +6,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/summerwind/h2spec/config"
-	"github.com/summerwind/h2spec/log"
+	"thetasinner/h2spec/config"
+	"thetasinner/h2spec/log"
 	"golang.org/x/net/http2"
 )
 
