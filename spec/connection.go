@@ -200,7 +200,7 @@ func (conn *Conn) SetMaxDynamicTableSize(v uint32) {
 	conn.encoder.SetMaxDynamicTableSize(v)
 }
 
-// Send sends a byte sequense. This function is used to send a raw
+// Send sends a byte sequence. This function is used to send a raw
 // data in tests.
 func (conn *Conn) Send(payload []byte) error {
 	conn.vlog(RawDataEvent{payload}, true)
@@ -348,7 +348,7 @@ func (conn *Conn) WriteSuccessResponse(streamID uint32, c *config.Config) {
 	conn.WriteData(streamID, true, []byte("success"))
 }
 
-// WaitEvent returns a event occured on connection. This function is
+// WaitEvent returns a event occurred on connection. This function is
 // used to wait the next event on the connection.
 func (conn *Conn) WaitEvent() Event {
 	var ev Event
@@ -398,7 +398,7 @@ func (conn *Conn) WaitEvent() Event {
 	return ev
 }
 
-// WaitEventByType returns a specified event occured on connection.
+// WaitEventByType returns a specified event occurred on connection.
 // This function is used to wait the next event that has specified
 // type on the connection.
 func (conn *Conn) WaitEventByType(evt EventType) (Event, bool) {
